@@ -85,17 +85,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 @auth()
 async def reset(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Reset the browser instance for the user."""
-    username = update.effective_user.username
+    key = update.effective_user.id
 
-    if username in chats:
+    if key in chats:
         await update.message.reply_text("Resetting your assistant...")
 
         # clear the chat instance and history
         await clear_history(context)
-        del chats[username]
+        del chats[key]
 
         # create a new chat instance
-        chats[username] = Chat(context=None)
+        chats[key] = Chat(context=None)
 
     await update.message.reply_text(
         "You are ready to start using Assistant. Say hello!"
@@ -148,13 +148,13 @@ async def schedule(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 def get_chat(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Chat:
     """Get the chat instance for the user."""
-    username = update.effective_user.username
+    key = update.effective_user.id
 
     # create a chat instance for the user if not already present
-    if username not in chats:
-        chats[username] = Chat(context)
+    if key not in chats:
+        chats[key] = Chat(context)
 
-    return chats[username]
+    return chats[key]
 
 
 async def error(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:

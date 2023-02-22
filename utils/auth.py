@@ -4,8 +4,9 @@ import os
 
 dotenv.load_dotenv()
 
-allowed_users = os.getenv("ALLOWED_USERS").split(",")
-
+allowed_users = []
+if os.getenv("ALLOWED_USERS") != None:
+    allowed_users = os.getenv("ALLOWED_USERS").split(',')
 
 def auth():
     """Verify that the user is allowed to use the bot."""
